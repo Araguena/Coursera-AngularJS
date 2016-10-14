@@ -5,24 +5,29 @@
 
   function checkLunch($scope) {
     $scope.lunchItems = '';
+    $scope.result = '';
     $scope.lunchItemsCount = 0;
 
     $scope.checkLunchSize = function () {
+      //Remove empty space and split the string
+      var lunchItemsArray = $scope.lunchItems.replace(" ", "").split(',');
+      console.log("Lunch items array after split/replace", lunchItemsArray);
 
-      //Handle case when non-alphabetic characters are entered - replace with empty space
-      if ($scope.lunchItems == "") {
-        alert("Please enter data first");
-      } else {
+      //In the split string, leave only non-empty items - if an item between commas is empty string, don't include it
+      var sortedArray = lunchItemsArray.filter(function (item) {
+        return item != '';
+      });
+      console.log("Lunch items array after filtering", sortedArray);
 
-        $scope.lunchItemsCount = $scope.lunchItems.split(",").length;
-        if ($scope.lunchItemsCount > 0 && $scope.lunchItemsCount <= 3) {
-          alert("Enjoy!");
-        }
-        else {
-          alert("Too much!");
-        }
+      if (sortedArray.length > 3) {
+        $scope.result = 'Too much!';
       }
-
+      else if (sortedArray.length > 0 && sortedArray.length <= 3) {
+        $scope.result = 'Enjoy!';
+      }
+      else {
+        $scope.result = 'Please enter data first';
+      }
     }
   }
 })();
